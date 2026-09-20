@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Translate Screen Text</title>
+  <script>
+    document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") || "dark";
+  </script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">T</div>
+        <div>
+          <h1>Translate Screen Text</h1>
+          <p class="subtitle">Tradução visual para jogos</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Atalho de captura</h2>
+      <label class="field-label" for="hotkey">Combinação de teclas</label>
+      <div class="row">
+        <input id="hotkey" type="text" autocomplete="off" spellcheck="false" placeholder="F6 ou Ctrl+Shift+G">
+        <button type="button" onclick="applyHotkey()">Aplicar atalho</button>
+      </div>
+      <p id="feedback" class="feedback"></p>
+
+      <div class="steps">
+        <div class="step"><strong>1. Atalho</strong>Pressione a combinação configurada.</div>
+        <div class="step"><strong>2. Seleção</strong>Arraste sobre o texto do jogo.</div>
+        <div class="step"><strong>3. Tradução</strong>Aguarde o processamento.</div>
+        <div class="step"><strong>4. Resultado</strong>Leia a tradução sobre a tela.</div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" type="button" onclick="bridge.openInformation()">Como funciona</button>
+        <button class="secondary" type="button" onclick="bridge.openSettings()">Configurações</button>
+      </div>
+    </section>
+
+    <footer class="card developer">
+      <div>
+        <p class="eyebrow">Desenvolvedor</p>
+        <p><strong>ExceptionError</strong></p>
+      </div>
+      <a href="#" onclick="bridge.openGithub(); return false;">github.com/TheGabrielSN ↗</a>
+    </footer>
+  </main>
+
+  <script>
+    let bridge = null;
+
+    function setFeedback(message, isError) {
+      const element = document.getElementById("feedback");
+      element.textContent = message;
+      element.classList.toggle("error", isError);
+    }
+
+    function applyHotkey() {
+      if (bridge) bridge.applyHotkey(document.getElementById("hotkey").value);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+    }
+
+    document.getElementById("hotkey").addEventListener("keydown", event => {
+      if (event.key === "Tab") return;
+      event.preventDefault();
+      if (event.key === "Backspace" || event.key === "Delete") {
+        event.currentTarget.value = "";
+        return;
+      }
+      if (["Control", "Shift", "Alt", "Meta"].includes(event.key)) return;
+
+      const parts = [];
+      if (event.ctrlKey) parts.push("Ctrl");
+      if (event.altKey) parts.push("Alt");
+      if (event.shiftKey) parts.push("Shift");
+      if (event.metaKey) parts.push("Cmd");
+      const aliases = {
+        " ": "Space",
+        "Escape": "Esc",
+        "ArrowUp": "Up",
+        "ArrowDown": "Down",
+        "ArrowLeft": "Left",
+        "ArrowRight": "Right",
+        "PageUp": "Page_Up",
+        "PageDown": "Page_Down"
+      };
+      const key = aliases[event.key] || (event.key.length === 1 ? event.key.toUpperCase() : event.key);
+      parts.push(key);
+      event.currentTarget.value = parts.join("+");
+    });
+
+    new QWebChannel(qt.webChannelTransport, channel => {
+      bridge = channel.objects.bridge;
+      bridge.stateChanged.connect((hotkey, targetLanguage, minimizeBehavior, theme) => {
+        document.getElementById("hotkey").value = hotkey;
+        applyTheme(theme);
+      });
+      bridge.feedback.connect(setFeedback);
+      bridge.requestState();
+    });
+  </script>
+</body>
+</html>

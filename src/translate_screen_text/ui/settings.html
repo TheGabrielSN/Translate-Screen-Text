@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configurações</title>
+  <script>
+    document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") || "dark";
+  </script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <p class="eyebrow">Preferências</p>
+      <h2>Configurações</h2>
+
+      <label class="field-label">Ao minimizar a janela</label>
+      <label class="option">
+        <input type="radio" name="minimize" value="normal" checked>
+        Minimizar normalmente para a barra de tarefas
+      </label>
+      <label class="option">
+        <input type="radio" name="minimize" value="tray">
+        Recolher para a bandeja de aplicativos do Windows
+      </label>
+
+      <label class="field-label settings-section">Tema da aplicação</label>
+      <div class="option-grid">
+        <label class="option">
+          <input type="radio" name="theme" value="dark" checked>
+          Escuro
+        </label>
+        <label class="option">
+          <input type="radio" name="theme" value="light">
+          Claro
+        </label>
+      </div>
+
+      <label class="field-label settings-section" for="language">Linguagem de destino da tradução</label>
+      <select id="language"></select>
+
+      <label class="field-label settings-section" for="capture-mode">Formato da captura</label>
+      <select id="capture-mode">
+        <option value="region">Selecionar uma região da tela</option>
+        <option value="fullscreen">Capturar a tela inteira</option>
+      </select>
+      <p id="feedback" class="feedback"></p>
+
+      <div class="actions">
+        <button class="secondary" type="button" onclick="bridge.closeDialog()">Cancelar</button>
+        <button type="button" onclick="saveSettings()">Salvar alterações</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let bridge = null;
+
+    function saveSettings() {
+      const behavior = document.querySelector('input[name="minimize"]:checked').value;
+      const theme = document.querySelector('input[name="theme"]:checked').value;
+      const captureMode = document.getElementById("capture-mode").value;
+      bridge.saveSettings(behavior, document.getElementById("language").value, theme, captureMode);
+    }
+
+    function setBusy(busy) {
+      document.body.classList.toggle("busy", busy);
+      document.querySelectorAll("input, select, button").forEach(control => {
+        control.disabled = busy;
+      });
+    }
+
+    document.querySelectorAll('input[name="theme"]').forEach(input => {
+      input.addEventListener("change", event => {
+        document.documentElement.dataset.theme = event.target.value;
+      });
+    });
+
+    new QWebChannel(qt.webChannelTransport, channel => {
+      bridge = channel.objects.settingsBridge;
+      bridge.stateReady.connect((behavior, targetLanguage, languagesJson, theme, captureMode) => {
+        document.documentElement.dataset.theme = theme;
+        document.querySelector(`input[name="minimize"][value="${behavior}"]`).checked = true;
+        document.querySelector(`input[name="theme"][value="${theme}"]`).checked = true;
+        const select = document.getElementById("language");
+        const languages = JSON.parse(languagesJson);
+        document.getElementById("capture-mode").value = captureMode;
+        languages.forEach(language => {
+          const option = document.createElement("option");
+          option.value = language.code;
+          option.textContent = language.label;
+          option.selected = language.code === targetLanguage;
+          select.appendChild(option);
+        });
+      });
+      bridge.feedback.connect((message, isError) => {
+        const element = document.getElementById("feedback");
+        element.textContent = message;
+        element.classList.toggle("error", isError);
+      });
+      bridge.busyChanged.connect(setBusy);
+      bridge.requestState();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+:root {
+  color-scheme: dark;
+  --window: #202020;
+  --surface: #2b2b2b;
+  --surface-subtle: #323232;
+  --surface-hover: #3a3a3a;
+  --surface-active: #414141;
+  --border: #454545;
+  --border-strong: #686868;
+  --control-underline: #9a9a9a;
+  --text: #ffffff;
+  --muted: #c5c5c5;
+  --accent: #60cdff;
+  --accent-hover: #74d4ff;
+  --accent-active: #4cc2ef;
+  --accent-border: #4ba3c7;
+  --accent-foreground: #003047;
+  --success: #6ccb5f;
+  --danger: #ff99a4;
+  --focus: rgba(96, 205, 255, 0.24);
+  --card-shadow: rgba(0, 0, 0, 0.24);
+  --step-border: #3d3d3d;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --window: #f3f3f3;
+  --surface: #ffffff;
+  --surface-subtle: #f9f9f9;
+  --surface-hover: #f0f0f0;
+  --surface-active: #e5e5e5;
+  --border: #d6d6d6;
+  --border-strong: #b8b8b8;
+  --control-underline: #8a8a8a;
+  --text: #1a1a1a;
+  --muted: #616161;
+  --accent: #0067c0;
+  --accent-hover: #1975c5;
+  --accent-active: #005a9e;
+  --accent-border: #005a9e;
+  --accent-foreground: #ffffff;
+  --success: #107c10;
+  --danger: #c42b1c;
+  --focus: rgba(0, 103, 192, 0.2);
+  --card-shadow: rgba(0, 0, 0, 0.06);
+  --step-border: #e2e2e2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  color: var(--text);
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  background: var(--window);
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.shell {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.topbar,
+.row,
+.actions,
+.developer {
+  display: flex;
+  align-items: center;
+}
+
+.topbar {
+  min-height: 52px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 2px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.subtitle,
+.muted {
+  color: var(--muted);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 12px;
+}
+
+.card {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px var(--card-shadow);
+}
+
+.card + .card {
+  margin-top: 14px;
+}
+
+.eyebrow {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.field-label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.settings-section {
+  margin-top: 18px;
+}
+
+.row {
+  gap: 8px;
+}
+
+input,
+select {
+  min-width: 0;
+  flex: 1;
+  height: 38px;
+  padding: 0 11px;
+  outline: none;
+  border: 1px solid var(--border-strong);
+  border-bottom-color: var(--control-underline);
+  border-radius: 4px;
+  color: var(--text);
+  background: var(--surface);
+  font: inherit;
+}
+
+input:hover,
+select:hover {
+  background: var(--surface-subtle);
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  border-bottom-width: 2px;
+  box-shadow: 0 0 0 2px var(--focus);
+}
+
+button {
+  height: 38px;
+  padding: 0 18px;
+  border: 1px solid var(--accent-border);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font: 600 13px "Segoe UI Variable", "Segoe UI", sans-serif;
+}
+
+button:hover {
+  background: var(--accent-hover);
+}
+
+button:active {
+  background: var(--accent-active);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+button.secondary {
+  color: var(--text);
+  border-color: var(--border-strong);
+  border-bottom-color: var(--control-underline);
+  background: var(--surface-subtle);
+}
+
+button.secondary:hover {
+  background: var(--surface-hover);
+}
+
+button.secondary:active {
+  background: var(--surface-active);
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+body.busy {
+  cursor: wait;
+}
+
+.actions {
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.feedback {
+  min-height: 17px;
+  margin: 8px 0 0;
+  color: var(--success);
+  font-size: 12px;
+}
+
+.feedback.error {
+  color: var(--danger);
+}
+
+.developer {
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.developer p {
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.step {
+  min-height: 76px;
+  padding: 11px;
+  border: 1px solid var(--step-border);
+  border-radius: 6px;
+  color: var(--muted);
+  background: var(--surface-subtle);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.step strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.option {
+  display: block;
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--surface-subtle);
+  cursor: pointer;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.option-grid .option {
+  margin: 0;
+}
+
+.option:hover {
+  background: var(--surface-hover);
+}
+
+.option input {
+  width: auto;
+  height: auto;
+  margin-right: 9px;
+  accent-color: var(--accent);
+}
+
+.info-list {
+  margin: 16px 0 0;
+  padding-left: 22px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.info-list li::marker {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 650px) {
+  .shell {
+    padding: 18px;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

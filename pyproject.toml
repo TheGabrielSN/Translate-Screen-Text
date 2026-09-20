@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "translate-screen-text"
+version = "0.1.0"
+description = "Traducao de textos exibidos em jogos por OCR e sobreposicao visual."
+authors = ["Gabriel Silva <darksilva02468@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "translate_screen_text", from = "src" }]
+include = [
+    { path = "src/translate_screen_text/ui/*.html", format = ["sdist", "wheel"] },
+    { path = "src/translate_screen_text/ui/*.css", format = ["sdist", "wheel"] },
+    { path = "src/translate_screen_text/assets/icon.png", format = ["sdist", "wheel"] },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+pillow = "^12.3.0"
+pynput = "^1.8.2"
+rapidocr = "^3.9.2"
+onnxruntime = "^1.30.0"
+google-cloud-translate = "^3.27.0"
+requests = "^2.34.2"
+argostranslate = "^1.11.0"
+numpy = "<2"
+pyside6 = "6.8.3"
+
+[tool.poetry.scripts]
+translate-screen = "translate_screen_text.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.22.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

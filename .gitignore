@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Testes e ferramentas
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Artefatos do empacotamento Windows
+/executable/build/
+/executable/dist/
+
+# Configuracoes locais e segredos
+.env
+.env.*
+!.env.example
+google-credentials*.json
+service-account*.json
+
+# IDE e sistema operacional
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Artefatos locais da aplicacao
+logs/
+cache/
+output/

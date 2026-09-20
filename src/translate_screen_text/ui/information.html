@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Como funciona</title>
+  <script>
+    document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") || "dark";
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <p class="eyebrow">Guia rápido</p>
+      <h2>Como funciona a tradução</h2>
+      <p class="muted">A aplicação permanece ativa em segundo plano aguardando o atalho global configurado.</p>
+      <ol class="info-list">
+        <li>Pressione o atalho enquanto o jogo estiver visível.</li>
+        <li>Selecione uma área com o mouse ou use a captura de tela inteira, conforme definido nas configurações.</li>
+        <li>A imagem é capturada e processada pelo OCR.</li>
+        <li>O texto reconhecido é enviado ao provedor de tradução escolhido.</li>
+        <li>O texto original recebe blur e a tradução é apresentada por cima.</li>
+        <li>Pressione uma tecla, clique o mouse ou use o controle para limpar o overlay.</li>
+      </ol>
+      <p class="muted">O print temporário é excluído após a tradução ser exibida. Use Ctrl+Shift+Q ou feche a janela principal para encerrar toda a aplicação.</p>
+    </section>
+  </main>
+</body>
+</html>
